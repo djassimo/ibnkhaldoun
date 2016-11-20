@@ -21,47 +21,49 @@ $req = $bdd->query("Select * from localisation");
 </head>
 <body>
     <div class="container">
-    <?php
- 
-          
-     
-    while($data = $req->fetch()){
-        echo $data['city']."<br>";
-        $lat = $data['latitude'];
-        $lng = $data['longitude'];
-        
-       
-    }
-     // $lat = "36.75220486920335";
-       // $lng = "10.160601562500005";
-    ?>
-        
+
+
+
+
           <div id="map"></div>
     </div>
     
-  
-    
+
+
     <script>
+
+
     function initMap() {
-    	
+
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 5,
             center: {lat: 39.753768, lng: 10.644}
-            
+
         });
+
         var geocoder = new google.maps.Geocoder();
 
-       /* document.getElementById('submit').addEventListener('click', function() {
-            geocodeAddress(geocoder, map);
-        });*/
-     
-     
-	 	var marker = new google.maps.Marker({
-	    	position: {lat: <?php echo $lat; ?>, lng: <?php echo $lng; ?>},
-	    	map: map,
-	    	title: "qsdfqf",
-	    	draggable: false
-	    });
+        <?php
+        while($data = $req->fetch()) {
+
+            $lat = $data['latitude'];
+            $lng = $data['longitude'];
+            $name = $data['city'];
+            echo '
+
+            var marker = new google.maps.Marker({
+            position: {lat: ' . $lat . ', lng: ' . $lng . '},
+            map: map,
+            title: "' . $name . '",
+            draggable: false,
+        });
+        ';
+
+
+    }?>
+
+    }
+
 
 
 	 	/*google.maps.event.addListener(marker, 'drag', function(){
@@ -71,7 +73,7 @@ $req = $bdd->query("Select * from localisation");
 	 	});*/
 
 
-    }
+
 
     
     function geocodeAddress(geocoder, resultsMap) {
@@ -95,7 +97,7 @@ $req = $bdd->query("Select * from localisation");
 
 		$('#Latitude').val(pos.lat());
 		$('#Longitude').val(pos.lng());
-		
+
 	}
 
 </script>
@@ -104,7 +106,3 @@ $req = $bdd->query("Select * from localisation");
 	
 </body>
 </html>
-
-
-
-
