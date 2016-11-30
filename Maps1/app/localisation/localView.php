@@ -1,11 +1,8 @@
 <?php
 require_once "../db.php";
 
-$req = $bdd->prepare("Select * from localisation");
-$req->execute();
+$req = $bdd->query("Select * from localisation");
    $nbrReq = $req->rowCount();
-
-   //$fetchAll = $req->fetchAll();  
 ?>
 
 <!DOCTYPE html>
@@ -23,34 +20,6 @@ $req->execute();
     
  
           <div id="map"></div>
-        <h2>Ajouter un Déplacement</h2>
-          <form action="../events/addDeplacement.php" method="post">
-                <label>La ville de départ</label>  
-                <select name="depart" id="depart">
-                 <?php
-                  while($depart =  $req->fetch()){
-                 ?>     
-                   <option value="<?php echo $depart['city']; ?>"> <?php echo $depart['city']; ?></option>
-                   <?php } 
-
-                   $req->closeCursor();
-                    ?>
-               </select>
-                <label>Déstinations</label> 
-               <select name="destination" id="destination">
-                 <?php
-                 $req->execute();
-                  while($dest =  $req->fetch()){
-                 ?>     
-                   <option value="<?php echo $dest['city']; ?>"> <?php echo $dest['city']; ?></option>
-                   <?php }
-                    $req->closeCursor();
-                    ?>
-               </select>
-                <label>Date du déplacement</label>    
-                <input id="date"  type="date" name="date" min="1332-05-27" max="1406-03-17"><br>
-                <input id="Ajouter" type="submit" name="envoyer" value="Ajouter un évènement">
-          </form>
     </div>
     <script>
    
@@ -68,7 +37,6 @@ $req->execute();
       var iterator=0;
       
      <?php
-     $req->execute();
       while($data = $req->fetch()){
         $city = $data['city'];  
         $lat = $data['latitude'];

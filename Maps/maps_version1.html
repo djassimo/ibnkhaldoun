@@ -1,88 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Geocoding service</title>
+  <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-</head>
-<body>
-<div class="container">
-    <form action="app/events/Add.php" method="post">
-        <label>Nom de l'évènement</label>
-        <input  type="textbox" name="nomEvent"><br>
-        <label>Latitude</label>
-        <input id="Latitude" type="textbox" name="lat"><br>
-        <label>Longitude</label>
-        <input id="Longitude" type="textbox" name="lng"><br>
-        <input id="Ajouter" type="submit" value="Ajouter un évènement">
-    </form>
-    <div>
-        <label>Nom de la ville</label>
-        <input id="address" type="textbox" >
-        <input id="submit" type="Button" value="Montrer la ville">
-    </div>
-
+    <title>Simple Polylines</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
     <div id="map"></div>
-</div>
-<script>
-    function initMap() {
+    <script>
 
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 5,
-            center: {lat: 39.753768, lng: 10.644}
-        });
-        var geocoder = new google.maps.Geocoder();
+// This example creates a 2-pixel-wide red polyline showing the path of William
+// Kingsford Smith's first trans-Pacific flight between Oakland, CA, and
+// Brisbane, Australia.
 
-        document.getElementById('submit').addEventListener('click', function() {
-            geocodeAddress(geocoder, map);
-        });
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 3,
+    center: {lat: 0, lng: -180},
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  });
 
-        var marker = new google.maps.Marker({
-            position: {lat: 39.753768, lng: 10.644},
-            map: map,
-            title: "bougez moi",
-            draggable: true,
-        });
+  var flightPlanCoordinates = [
+    {lat: 37.772, lng: -122.214},
+    {lat: 21.291, lng: -157.821}
+  ];
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
 
-        google.maps.event.addListener(marker, 'drag', function(){
-            setPosition(marker);
+  flightPath.setMap(map);
+}
 
-
-        });
-
-
-    }
-
-
-    function geocodeAddress(geocoder, resultsMap) {
-        var address = document.getElementById('address').value;
-        geocoder.geocode({'address': address}, function(results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                resultsMap.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: resultsMap,
-                    position: results[0].geometry.location
-                });
-
-            } else {
-                alert('La ville est introuvable: ' + status);
-            }
-        });
-    }
-
-    function setPosition(marker) {
-        var pos= marker.getPosition();
-
-        $('#Latitude').val(pos.lat());
-        $('#Longitude').val(pos.lng());
-
-    }
-
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ5_W_BaAsUAhJff4Ewrq7P845mJ1Udg&callback=initMap"
+    </script>
+    <script async defer
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ5_W_BaAsUAhJff4Ewrq7P845mJ1Udg&callback=initMap"
         async defer></script>
-
-</body>
+  </body>
 </html>

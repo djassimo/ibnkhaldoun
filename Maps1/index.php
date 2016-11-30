@@ -11,11 +11,9 @@
 <div class="container">
 
 <div>
-
 	<label>Taper le nom de la ville : </label>
 	<input id="address" type="textbox" >
-  <input id="submit" type="Button" value="Montrer la ville">
- 
+    <input id="submit" type="Button" value="Montrer la ville">
 </div>
 
 <div id="map"></div>
