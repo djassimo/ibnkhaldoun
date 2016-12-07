@@ -8,11 +8,11 @@ if(isset($_POST['envoyer'])){
 		(isset($_POST['date']) && !empty($_POST['date'])) 
 	 ) {
             
-            $req =$bdd->prepare("INSERT INTO deplacement (villeDepart,villeArrivee, date) VALUES (?,?,?)");
+            $req =$bdd->prepare("INSERT INTO deplacement (depart,destination, date) VALUES (?,?,?)");
             $req->execute(array($_POST['depart'], $_POST['destination'], $_POST['date']));
             
        
-           header ('Location: deplacementView.php?date='.$_POST['date']);
+            header ('Location: deplacementView.php?date='.$_POST['date']);
             exit();
 	}
 }

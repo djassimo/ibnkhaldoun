@@ -5,19 +5,18 @@ require_once "../db.php";
 if(isset ($_GET['date']))
 {
   $date = $_GET['date'];
-  $req = $bdd->prepare("Select * from chrono WHERE d='$date'");
+  $req = $bdd->prepare("Select * from deplacement WHERE date='$date'");
 }else
 {
-  $req = $bdd->prepare("Select * from chrono WHERE id=1");
+  $req = $bdd->prepare("Select * from deplacement WHERE id=1");
 }
-
 $req->execute();
 
   $nbrReq = $req->rowCount();
   $data = $req->fetch();
 
 // récupération de tout les déplacemnt effectuer afin de remplire la barre chronologique  
-  $chrono = $bdd->query("SELECT * FROM chrono");
+  $chrono = $bdd->query("SELECT * FROM deplacement order by date");
 ?>
 
 <!DOCTYPE html>
@@ -41,30 +40,16 @@ $req->execute();
           <?php 
             while ($d = $chrono->fetch())
              { 
-              $dd=  $d['d'];
+              $dd=  $d['date'];
               $dateD = DateTime::createFromFormat('Y-m-d',$dd)->format('Y');
-             
-                     echo " <a href='deplacementview.php?date=$dd'>";
-             
+                   echo " <a href='deplacementview.php?date=$dd'>";
               ?>
                   <div class="entry">
-                  <?php if ($d['dateDebut']!= NULL)
-                  {
-                    $id = $d['villeDepart'];
-                    $villeSejour = $bdd->query("select city from localisation where id = '$id'");
-                    $r = $villeSejour->fetch();
-                    ?>
-                    <h1><?php  echo "de ",$d['dateDebut'],"  à ",$d['d'],"<br>";?></h1>
-
-                     <h2><?php echo $r['city']; ?></h2>
-                     <?php
-                  }else{
-                    ?>
-                   <h1><?php echo $dateD; ?></h1>
-                    <h2><?php  echo "de ",$d['villeDepart'],"  à ",$d['villeArrivee'],"<br>";?></h2>
-                   <?php
-                  }
-             
+                    <h1><?php echo $dateD; ?></h1>
+                    <h2><?php  echo "de ",$d['depart'],"  à ",$d['destination'],"<br>";?></h2>
+                   
+                    <?php
+            
                     ?>
                 </div>
               <?php
@@ -74,23 +59,23 @@ $req->execute();
                <br>";*/
              } 
           ?>
+
+
+
+  
+
 </div>
+
+        
+
+
+
         <div class="contenu">
-
-            <div id="addinfo">
-              <form>
-                <label>sahit</label>
-                <input type="text" name="id">
-                <p id="id"></p>
-              </form>
-
-            </div>
           
         </div>
     </div>
     <script>
-
-       
+   
     function initMap() {
     	
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -106,28 +91,23 @@ $req->execute();
       
       
      <?php
-
-     
-      	$depart = $data['villeDepart'];
-      	$destination = $data['villeArrivee'];
-        $id = $data['villeDepart'];
-
-        $sql = $bdd->prepare("Select * from localisation WHERE city = '$depart' or city = '$destination' OR 
-                              id = '$id'");
-  
+    
+     	
+      	$depart = $data['depart'];
+      	$destination = $data['destination'];
       	
+      	$sql = $bdd->prepare("Select * from localisation WHERE city = '$depart' or city = '$destination'");
 		    $sql->execute();
         $tst = $sql->rowCount();
-   	  	echo $tst ;
+   		echo $tst ;
 
 
       	while($donnees = $sql->fetch())
       	{
-      	    $city = $donnees['city'];  
+      	        $city = $donnees['city'];  
 		        $lat = $donnees['latitude'];
 		        $lng = $donnees['longitude'];
-		        $idDeplacement = $donnees['id'];
-
+		        $idDeplacement = $data['id'];
       		if ($donnees['city'] == $depart)
       		 {
 		        $event = "depart";
@@ -157,16 +137,10 @@ $req->execute();
       var marker = new google.maps.Marker({
 	    	position: {lat: positions[iterator].lat, lng: positions[iterator].lng},
 	    	map: map,
-	    	title: ""+positions[iterator].idDeplacement,
+	    	title: positions[iterator].title,
 	    	draggable: false,
 	    	animation: google.maps.Animation.DROP
 	    });
-
-      marker.addListener('click', function() {
-        //id=positions[iterator].idDeplacement;
-        //console(positions[iterator].idDeplacement);
-         $("#id").text(marker.title);
-      });
        iterator++;
     }
 

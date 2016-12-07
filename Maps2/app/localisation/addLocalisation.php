@@ -8,8 +8,8 @@ if(isset($_POST['envoyer'])){
 		(isset($_POST['lng']) && !empty($_POST['lng'])) 
 	 ) {
             
-            $req =$bdd->prepare("INSERT INTO localisation (latitude, longitude,city) VALUES (?,?,?)");
-            $req->execute(array( $_POST['lat'], $_POST['lng'], $_POST['nomVille']));
+            $req =$bdd->prepare("INSERT INTO localisation (city,latitude, longitude) VALUES (?,?,?)");
+            $req->execute(array($_POST['nomVille'], $_POST['lat'], $_POST['lng']));
             
        
             header ('Location: localView.php');
