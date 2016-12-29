@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Localisation</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Latitude mon ami</th>
+                <td>{{ localisation.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ localisation.longitude }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ localisation.city }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ localisation.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('localisation_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('localisation_edit', { 'id': localisation.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

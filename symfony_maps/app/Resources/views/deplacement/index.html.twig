@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        {% for s in sejours %}
+
+                        <h1>{{ s.id }}</h1>
+
+                        {% for test in s.sejour %}
+                                {{ test.id }}
+                        {% endfor %}
+            <br>
+        {% endfor %}
+
+
+        <div id="map"></div>
+        <div class="bar"></div>
+        <div class="timeline">
+            {% for deplacement in deplacements %}
+                {% set dd =deplacement.d %}
+                {% set dateD = dd|date("m/d/Y") %}
+                 <a href="{{ path('deplacement', { 'date': deplacement.d }) }}" >
+                    <div class="entry">
+                        {% if deplacement.dateDebut is null %}
+                            <h1>{{ dateD }}</h1>
+                            <h1>De {{ deplacement.villeDepart }} à {{ deplacement.villeArrivee }} </h1>
+                        {% else %}
+                            <h1>{{ deplacement.dateDebut }} à {{ deplacement.d }} </h1>
+                            <h2>{{ deplacement.villeDepart }}</h2>
+                        {% endif %}
+                    </div>
+                 </a>
+
+                <br>
+            {% endfor %}
+        </div>
+
+
+        <div class="contenu">
+
+            <div id="addinfo">
+                <h1>Formulaire d'ajout d'articles</h1>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input type="submit" value="Create" />
+                    {{ form_end(form) }}
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <ul>
+        <li>
+            <a href="{{ path('deplacement_new') }}">Create a new deplacement</a>
+        </li>
+    </ul>
+
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+
+        function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: {lat: 39.753768, lng: 10.644}
+
+            });
+            var geocoder = new google.maps.Geocoder();
+
+            // variable js
+            var positions = [];
+            var iterator = 0;
+            var city = "dd";
+
+            // variable twig
+            {% set depart = dep[0].villeDepart %}
+            {% set destination = dep[0].villeArrivee %}
+            {% set id = dep[0].villeDepart %}
+            {% set date = dep[0].d %}
+
+            {% for location in locations %}
+                {% if depart ==location.city or destination == location.city or id == location.id %}
+                {% set event = "" %}
+                {% if location.city != id and location.city != destination %}
+                    {% set event = "sejour" %}
+                {% endif %}
+
+            positions.push({
+                lat: {{ location.latitude }},
+                lng: {{ location.longitude }},
+                city: "{{ location.city }}",
+                idDeplacement: {{ location.id }},
+                destination: "{{ dep[0].villeArrivee }}",
+                date: {{ dep[0].d }},
+                event2: "{{ event }}"
+
+            });
+
+            {% endif %}
+
+
+            {% endfor %}
+
+            for (var i = 0; i < positions.length; i++) {
+                setTimeout(addMarker, (i + 1) * 400);
+            }
+
+            function addMarker() {
+                var marker = new google.maps.Marker({
+                    position: {lat: positions[iterator].lat, lng: positions[iterator].lng},
+                    map: map,
+                    title: "" + positions[iterator].idDeplacement,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP,
+                    date: positions[iterator].date,
+                    destination: positions[iterator].destination,
+                    event2: positions[iterator].event2
+                });
+
+                marker.addListener('click', function () {
+                    if (marker.event2 == "sejour") {
+
+                        $("#addinfo").show();
+                        $('#idDep').val(marker.date);
+                        $('#dest').val(marker.destination);
+                        $('#mapsbundle_article_datesejourid').val(marker.title);
+
+                    }
+
+                });
+                iterator++;
+            }
+
+            // afficher la ligne du déplacement
+            var flightPath = new google.maps.Polyline({
+                path: positions,
+                geodesic: true,
+                strokeColor: '#0066ff',
+                strokeOpacity: 1.0,
+                strokeWeight: 5
+            });
+
+            flightPath.setMap(map);
+
+
+        }
+
+        $("#addinfo").hide();
+
+
+
+    </script>
+{% endblock %}

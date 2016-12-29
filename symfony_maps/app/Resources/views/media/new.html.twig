@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Media creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    {% for media in medias %}
+            {% if 'jpeg' in media.image or 'png' in media.image %}
+                <img src="{{ asset('uploads/')~media.image }}" width="100px"/>
+            {% else %}
+                <a href="{{ asset('uploads/')~media.image }}" >{{ media.image }}</a>
+            {% endif %}
+
+        {{ media.id }}
+
+    {% endfor %}
+    <br>
+    <button>Terminer</button>
+
+    <ul>
+        <li>
+            <a href="{{ path('media_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#mapsbundle_media_articleid').val({{ id }});
+        });
+
+
+    </script>
+
+{% endblock %}

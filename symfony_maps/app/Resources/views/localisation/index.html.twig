@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>City</th>
+            <th>Id</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for localisation in localisations %}
+            <tr>
+                <td><a href="{{ path('localisation_show', { 'id': localisation.id }) }}">{{ localisation.latitude }}</a>
+                </td>
+                <td>{{ localisation.longitude }}</td>
+                <td>{{ localisation.city }}</td>
+                <td>{{ localisation.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('localisation_show', { 'id': localisation.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('localisation_edit', { 'id': localisation.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <ul>
+        <li>
+            <a href="{{ path('localisation_new') }}">Create a new localisation</a>
+        </li>
+    </ul>
+    <script>
+
+        function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: {lat: 39.753768, lng: 10.644}
+
+            });
+            var geocoder = new google.maps.Geocoder();
+
+
+            var positions = [];
+            var iterator = 0;
+
+            {% for localisation in localisations %}
+            positions.push({
+                lat: {{ localisation.latitude }},
+                lng: {{ localisation.longitude }},
+                city: "{{ localisation.city }}"
+            });
+
+            {% endfor %}
+
+            for (var i = 0; i < positions.length; i++) {
+                setTimeout(addMarker, (i + 1) * 400);
+            }
+
+            function addMarker() {
+                var marker = new google.maps.Marker({
+                    position: {lat: positions[iterator].lat, lng: positions[iterator].lng},
+                    map: map,
+                    title: positions[iterator].title,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP
+                });
+                iterator++;
+            }
+
+        }
+
+        function geocodeAddress(geocoder, resultsMap) {
+            var address = document.getElementById('address').value;
+            geocoder.geocode({'address': address}, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    resultsMap.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: resultsMap,
+                        position: results[0].geometry.location
+                    });
+
+                } else {
+                    alert('La ville est introuvable: ' + status);
+                }
+            });
+        }
+
+        function setPosition(marker) {
+            var pos = marker.getPosition();
+
+            $('#Latitude').val(pos.lat());
+            $('#Longitude').val(pos.lng());
+
+        }
+
+    </script>
+{% endblock %}

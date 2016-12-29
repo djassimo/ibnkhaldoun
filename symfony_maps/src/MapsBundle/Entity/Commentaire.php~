@@ -1,0 +1,54 @@
+<?php
+
+namespace MapsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Commentaire
+ *
+ * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="FKCommentair206813", columns={"Utilisateurid"}), @ORM\Index(name="FKCommentair385326", columns={"Articleid"})})
+ * @ORM\Entity
+ */
+class Commentaire
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCom", type="date", nullable=true)
+     */
+    private $datecom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contenu", type="text", length=65535, nullable=true)
+     */
+    private $contenu;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Articleid", type="integer", nullable=false)
+     */
+    private $articleid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Utilisateurid", type="integer", nullable=false)
+     */
+    private $utilisateurid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

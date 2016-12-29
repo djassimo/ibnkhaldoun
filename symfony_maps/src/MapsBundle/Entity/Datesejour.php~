@@ -1,0 +1,47 @@
+<?php
+
+namespace MapsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Datesejour
+ *
+ * @ORM\Table(name="datesejour", indexes={@ORM\Index(name="FKDateSejour861097", columns={"Localisationid"})})
+ * @ORM\Entity
+ */
+class Datesejour
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateDeb", type="date", nullable=true)
+     */
+    private $datedeb;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateFin", type="date", nullable=true)
+     */
+    private $datefin;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Localisationid", type="integer", nullable=false)
+     */
+    private $localisationid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

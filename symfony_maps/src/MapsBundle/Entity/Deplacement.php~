@@ -1,0 +1,47 @@
+<?php
+
+namespace MapsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Deplacement
+ *
+ * @ORM\Table(name="deplacement")
+ * @ORM\Entity
+ */
+class Deplacement
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="villeDepart", type="string", length=255, nullable=false)
+     */
+    private $villedepart;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="villeArrivee", type="string", length=255, nullable=true)
+     */
+    private $villearrivee;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

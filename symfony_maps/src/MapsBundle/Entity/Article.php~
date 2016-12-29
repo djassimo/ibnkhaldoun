@@ -1,0 +1,54 @@
+<?php
+
+namespace MapsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Article
+ *
+ * @ORM\Table(name="article", indexes={@ORM\Index(name="FKArticle481198", columns={"datesejourid"})})
+ * @ORM\Entity
+ */
+class Article
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="titre", type="string", length=255, nullable=true)
+     */
+    private $titre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="datesejourid", type="integer", nullable=true)
+     */
+    private $datesejourid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

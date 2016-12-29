@@ -1,0 +1,47 @@
+<?php
+
+namespace MapsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Localisation
+ *
+ * @ORM\Table(name="localisation", uniqueConstraints={@ORM\UniqueConstraint(name="city", columns={"city"})})
+ * @ORM\Entity
+ */
+class Localisation
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="latitude", type="string", length=255, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="longitude", type="string", length=255, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+
